@@ -27,7 +27,7 @@ setuptools.setup(
 	},
 	classifiers=[
 		"Programming Language :: Python :: 3",
-		"License :: OSI Approved :: BSD License",
+		"License :: OSI Approved :: BSD 2 clause License",
 		"Operating System :: OS Independent",
 	],
 	package_dir={"": "src"},
