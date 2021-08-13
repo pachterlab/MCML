@@ -30,17 +30,39 @@ If you want to run the latest version of the code, you can install from git:
     $ python3 -m pip install -U git+git://github.com/pachterlab/MCML.git
 
 
-For more on the tests, such as how to write tests and how to control
-which tests to run, see [Test README.md](test-data/unit/README.md).
+Examples
+-----------
+
+Example data download:
+
+    $ wget --quiet  (smartseq.mtx)
+    $ wget --quiet  (celltypelabels)
+    $ wget --quiet  (sexlabels)
+    
+And (optional) pre-processing:
+```python
+>>> read()
+>>> show size of matrix
+
+>>> read labels
+>>> show labels
+
+>>> read labels
+>>> show labels
+
+>>> save labels
+>>> save labels
+
+```
 
 To run the _MCML_ or _bMCML_ algorithms for dimensionality reduction (Python 3):
 
 ```python
 >>> from MCML.modules import MCML, bMCML
 
+>>> run
 >>>
->>>
->>>
+>>> plot_losses
 
 ```
 
@@ -50,7 +72,7 @@ To use the metrics available in _tools_:
 ```python
 >>> from MCML import tools as tl
 
->>>
+>>> 
 >>>
 >>>
 >>>
