@@ -1,7 +1,7 @@
 # MCML
 
 MCML is a toolkit for semi-supervised dimensionality reduction and quantitative analysis of Multi-Class, Multi-Label data. We describe its uses for singl-cell datasets here...
-MCML modules include the _MCML_ and _bMCML_ algorithms described in ... for dimensionality reduction, and MCML _tools_ include functions for quantitative analysis of inter- and intra- distances between labeled groups and nearest neighbor metrics in the latent or ambient space. 
+MCML _modules_ include the _MCML_ and _bMCML_ algorithms described in ... for dimensionality reduction, and MCML _tools_ include functions for quantitative analysis of inter- and intra- distances between labeled groups and nearest neighbor metrics in the latent or ambient space. 
 
 Requirements
 ------------
