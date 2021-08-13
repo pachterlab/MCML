@@ -69,29 +69,6 @@ def getCentroidDists_oneVsAll(embed,clusType,clus):
 
 	return dists.flatten().tolist()
 
-#Pairwise distances between binary labels
-def getPairwise(embed,clusType):
-	""" Compute inter-distances for a binary set of labels 
-
-	Parameters
-	----------
-	embed : Numpy array for latent space (n_obs x n_features or n_latent)
-	clusType : List of labels for a class, where only two unique labels possible
-
-	Returns
-	-------
-	dists : List of pairwise distances between all points in each of the two labels
-	"""
-
-	clusters = np.unique(clusType)
-
-	sub1 = embed[clusType == clusters[0],:]
-	sub2 = embed[clusType == clusters[1],:]
-
-	dists = pairwise_distances(sub1,sub2,metric='l1')
-	dists = dists.flatten().tolist()
-
-	return dists
 
 def getIntraVar(embed, outLab, inLab):
 	""" Compute intra-distances for an inner set of labels (averaged distances)
@@ -167,23 +144,6 @@ def getInterVar(embed, outLab, inLab):
 	return avg_dists
 
 
-def ecdf(data):
-	""" Compute eCDF
-
-	Parameters
-	----------
-	data : List of values
-
-	Returns
-	-------
-	(x,y) : Tuple of x and y values for eCDF plot
-	"""
-	x = np.sort(data)
-	n = len(x)
-	y = np.arange(n) / float(n)
-
-
-	return(x,y)
 
 def getNeighbors(embed, n_neigh = 15, p=1):
 	"""Get indices of nearest neighbors for all points in embedding 
@@ -192,7 +152,7 @@ def getNeighbors(embed, n_neigh = 15, p=1):
 	----------
 	embed : Numpy array for latent space (n_obs x n_features or n_latent)
 	n_neigh : No. of neighbors for each cell
-	p : Distance metric (1= Manhattan, 2= Euclidean)
+	p : Distance metric (1= Manhattan, 2= Euclidean) (see options in sklearn.neighbors.DistanceMetric)
 
 	Returns
 	-------
@@ -249,7 +209,7 @@ def frac_unique_neighbors(latent, cluster_label, metric = 1,neighbors = 30):
 	----------
 	latent : numpy array of latent space (n_obs x n_latent)
 	cluster_label : list of labels for all n_obs
-	metrics : Distance metric, 1 = manhattan
+	metrics : Distance metric, 1 = manhattan (see options in sklearn.neighbors.DistanceMetric)
 	neighbors : No. of nearest neighbors to consider
 
 	Returns
