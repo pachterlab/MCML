@@ -1,7 +1,7 @@
 # MCML
 
 MCML is a toolkit for semi-supervised dimensionality reduction and quantitative analysis of Multi-Class, Multi-Label data. We describe its uses for singl-cell datasets here...
-MCML modules include the MCML and bMCML algorithms described in ... for dimensionality reduction, and MCML tools include functions for quantitative analysis of inter- and intra- distances between labeled groups and nearest neighbor metrics in the latent or ambient space. 
+MCML modules include the _MCML_ and _bMCML_ algorithms described in ... for dimensionality reduction, and MCML _tools_ include functions for quantitative analysis of inter- and intra- distances between labeled groups and nearest neighbor metrics in the latent or ambient space. 
 
 Requirements
 ------------
@@ -33,7 +33,7 @@ If you want to run the latest version of the code, you can install from git:
 For more on the tests, such as how to write tests and how to control
 which tests to run, see [Test README.md](test-data/unit/README.md).
 
-To run the **MCML** or **bMCML** algorithms for dimensionality reduction (Python 3):
+To run the _MCML_ or _bMCML_ algorithms for dimensionality reduction (Python 3):
 
 ```python
 >>> from MCML.modules import MCML, bMCML
@@ -45,7 +45,7 @@ To run the **MCML** or **bMCML** algorithms for dimensionality reduction (Python
 ```
 
 
-To use the metrics available in **tools**:
+To use the metrics available in _tools_:
 
 ```python
 >>> from MCML import tools as tl
