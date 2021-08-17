@@ -2,7 +2,7 @@
 
 MCML is a toolkit for semi-supervised dimensionality reduction and quantitative analysis of Multi-Class, Multi-Label data. We demonstrate its use for single-cell datasets though the method can use any matrix as input.
 
-MCML __modules__ include the __MCML__ and __bMCML__ algorithms for dimensionality reduction, and MCML __tools__ include functions for quantitative analysis of inter- and intra- distances between labeled groups and nearest neighbor metrics in the latent or ambient space. 
+MCML __modules__ include the __MCML__ and __bMCML__ algorithms for dimensionality reduction, and MCML __tools__ include functions for quantitative analysis of inter- and intra- distances between labeled groups and nearest neighbor metrics in the latent or ambient space. The __modules__ are autoencoder-based neural networks with label-aware cost functions for weight optimization.
 
 Briefly, __MCML__ adapts the [Neighborhood Component Analysis algorithm](https://www.cs.toronto.edu/~hinton/absps/nca.pdf) to utilize mutliple classes of labels for each observation (cell) to embed observations of the same labels close to each other. This essentially optimizes the latent space for k-Nearest Neighbors (KNN) classification.
 
