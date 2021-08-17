@@ -16,7 +16,7 @@ def getCentroidDists(embed,clusType):
 	Parameters
 	----------
 	embed : Numpy array for latent space (n_obs x n_features or n_latent)
-	clusType : List of labels for a class
+	clusType : Numpy array of list of labels for a class (n_obs, )
 
 	Returns
 	-------
@@ -44,8 +44,8 @@ def getCentroidDists_oneVsAll(embed,clusType,clus):
 	Parameters
 	----------
 	embed : Numpy array for latent space (n_obs x n_features or n_latent)
-	clusType : List of labels for a class
-	clus : Specific label (string) from which to calculate inter-distances
+	clusType : Numpy array of list of labels for a class (n_obs, )
+	clus : Specific label (single string input) from which to calculate inter-distances
 
 	Returns
 	-------
@@ -76,8 +76,8 @@ def getIntraVar(embed, outLab, inLab):
 	Parameters
 	----------
 	embed : Numpy array for latent space (n_obs x n_features or n_latent)
-	outLab : 1D array for outer label (e.g. cell type)
-	inLab : 1D array for inner label (e.g. sex)
+	outLab : 1D array for outer label (e.g. cell type) (n_obs, )
+	inLab : 1D array for inner label (e.g. sex) (n_obs, )
 
 	Returns
 	-------
@@ -114,8 +114,8 @@ def getInterVar(embed, outLab, inLab):
 	Parameters
 	----------
 	embed : Numpy array for latent space (n_obs x n_features or n_latent)
-	outLab : 1D array for outer label (e.g. cell type)
-	inLab : 1D array for inner label (e.g. sex)
+	outLab : 1D array for outer label (e.g. cell type) (n_obs, )
+	inLab : 1D array for inner label (e.g. sex) (n_obs, )
 
 	Returns
 	-------
@@ -151,8 +151,8 @@ def getNeighbors(embed, n_neigh = 15, p=1):
 	Parameters
 	----------
 	embed : Numpy array for latent space (n_obs x n_features or n_latent)
-	n_neigh : No. of neighbors for each cell
-	p : Distance metric (1= Manhattan, 2= Euclidean) (see options in sklearn.neighbors.DistanceMetric)
+	n_neigh : No. of neighbors for each cell. Default is 15
+	p : Distance metric (1= Manhattan, 2= Euclidean) (see options in sklearn.neighbors.DistanceMetric). Default is 1
 
 	Returns
 	-------
@@ -168,8 +168,8 @@ def getIntersect(orig, new):
 
 	Parameters
 	----------
-	orig : Original/ambient space nearest neighbor indices, from getNeighbors()
-	new : Latent/Comparison space nearest neighbor indices, from getNeighbors()
+	orig : Original/ambient space nearest neighbor indices, from getNeighbors() (n_obs x n_neigh)
+	new : Latent/Comparison space nearest neighbor indices, from getNeighbors() (n_obs x n_neigh)
 
 	Returns
 	-------
@@ -187,8 +187,8 @@ def getJaccard(orig, new):
 
 	Parameters
 	----------
-	orig : Original/ambient space nearest neighbor indices, from getNeighbors()
-	new : Latent/Comparison space nearest neighbor indices, from getNeighbors()
+	orig : Original/ambient space nearest neighbor indices, from getNeighbors() (n_obs x n_neigh)
+	new : Latent/Comparison space nearest neighbor indices, from getNeighbors() (n_obs x n_neigh)
 
 	Returns
 	-------
@@ -207,8 +207,8 @@ def frac_unique_neighbors(latent, cluster_label, metric = 1,neighbors = 30):
 
 	Parameters
 	----------
-	latent : numpy array of latent space (n_obs x n_latent)
-	cluster_label : list of labels for all n_obs
+	latent : Numpy array of latent space (n_obs x n_latent)
+	cluster_label : Numpy array of list of labels for all n_obs (n_obs, )
 	metrics : Distance metric, 1 = manhattan (see options in sklearn.neighbors.DistanceMetric)
 	neighbors : No. of nearest neighbors to consider
 

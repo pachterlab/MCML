@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 	long_description = fh.read()
 
 setuptools.setup(
-	name="MCML-tarachari3",
+	name="MCML",
 	version="0.0.1",
 	author="Tara Chari",
 	author_email="tarachari3@gmail.com",
@@ -27,7 +27,7 @@ setuptools.setup(
 	},
 	classifiers=[
 		"Programming Language :: Python :: 3",
-		"License :: OSI Approved :: BSD 2 clause License",
+		"License :: OSI Approved :: BSD License",
 		"Operating System :: OS Independent",
 	],
 	package_dir={"": "src"},

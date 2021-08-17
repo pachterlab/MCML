@@ -44,7 +44,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class MCML():
 	"""
 	Create object for fitting NCA model
-	Returns: NCA model object
+	Returns: MCML model object
     """
 
 	def __init__(self, n_latent = 10, n_hidden = 128, epochs = 100,batch_size = 128, lr = 1e-3, weight_decay=1e-5):
@@ -69,11 +69,14 @@ class MCML():
 
 
 	def normLabels(self, Y): #allLabs
-		"""
+		""" Create boolean mask for obs in same labels. Normalize to maximum possible value per label.
+
 		Parameters:
+		----------
 	    Y : 2d np array (from lists of lists), columns represent each class of labels
 
 	    Returns :
+	    ----------
 	    Normalized booleam mask for pairwise comparisons between points for each label class
 	    """
 		#Weight mask for each label type by block area
@@ -117,15 +120,19 @@ class MCML():
 
 
 	def multiLabelMask(self,Y, Y_b_cont, dim_cont, cont): 
-		"""
+		"""Create boolean or weighted mask for discrete or continuous labels in NCA
+
 		Parameters:
+		----------
 	    Y : 2d np array (from lists of lists), columns represent each class of labels
 	    Y_b_cont : Additional numpy array of lists for continuous labels
 		dim_cont : List of dimension for each continuous label (one value per multi-dim label)
 		cont : Boolean, if continuous labels are present
 
 	    Returns :
-	    Masks for pairwise comparisons between points for each label class
+	    ----------
+	    masks: Mask array for pairwise comparisons between points for each label class
+	    weights: Concatenated mask arrays of weights for pairwise comparisons between points for each continuous label class
 	    """
 
 	    #Loop through all continuous classes of labels
@@ -179,13 +186,16 @@ class MCML():
 		return masks, weights
 
 	def pairwise_dists(self,z1,z2,p=2.0):
-		"""
+		"""Calculate  pairwise distances between obs of two matrices
 		Parameters:
-		z1 : Input matrix 1
-		z2 : Input matrix 2
+		----------
+		z1 : Input matrix 1 (n_obs1 x n_feat1)
+		z2 : Input matrix 2 (n_obs2 x n_feat2)
 		p : Distance metric (1=manhattan, 2=euclidean)
+
 		Returns :
-		Pairwise distance matrix between z1 and z2
+		----------
+		dist: Pairwise distance matrix between z1 and z2 (n_obs1 x n_obs2)
 		"""
 		d1 = z1.clone()
 		d2 = z2.clone()
@@ -195,10 +205,14 @@ class MCML():
 
 
 	def softmax(self, p):
-		"""
+		"""Perform softmax on values on each row
+
 		Parameters:
+		----------
 		p : n_obs x n_obs probability matrix
+
 		Returns :
+		----------
 		Softmax of matrix p
 		"""
 		#Based on sklearn NCA implementation
@@ -213,8 +227,10 @@ class MCML():
 		return p
 
 	def lossFunc(self, recon_batch, X_b, z, masks, weights, cont, lab_weights, fracNCA):
-		"""
+		"""Calculate NCA-based loss function
+
 		Parameters:
+		----------
 		recon_batch : Reconstruction from decoder for mini-batch
 		X_b : Mini-batch of X
 		z : Latent space
@@ -223,7 +239,9 @@ class MCML():
 		cont : Boolean, if continuous labels are present
 		lab_weights : Weights for each label's masks in loss calculation
 		fracNCA : Fraction of NCA cost in loss calculation
+
 		Returns :
+		----------
 		Loss value with NCA cost and Reconstruction loss
 		"""
 		losses = []
@@ -300,8 +318,10 @@ class MCML():
 
 
 	def getLoadings(self):
-		"""
+		"""Get weight loadings for features in final layer
+
 		Returns :
+		----------
 		Weights from the decoder layer, matrix of n_features x n_hidden
 		"""
 		if self.model != None:
@@ -310,13 +330,17 @@ class MCML():
 			return None
 
 	def plotLosses(self, figsize=(15,4),fname=None,axisFontSize=11,tickFontSize=10):
-		"""
+		"""Plot loss values over epochs
+
 		Parameters:
+		----------
 		figsize : Tuple for figure size
 		fname : Name for file to save figure to, if None plot is displayed
 		axisFontSize : Font size for axis labels
 		tickFontSize : Font size for tick labels
+
 		Returns :
+		----------
 		Plot of each loss term over epochs
 		"""
 		fig, axs = plt.subplots(1, self.Losses.shape[1],figsize=figsize)
@@ -357,18 +381,21 @@ class MCML():
 
 
 	def fit(self,X,Y,Y_cont = None, dim_cont = None, lab_weights = None, fracNCA = 0.8, silent = False, ret_loss = False):
-		"""
+		"""Fit latent space for input X with NCA cost function and labels Y, Y_cont
+
 		Parameters:
+		----------
 		X : Input data as numpy array (n_obs x n_features)
 		Y : Label matrix, numpy array of lists. Col is label, Row is each label class. (n_classes x n_obs)
-		Y_cont : Additional numpy array of lists for continuous labels (optional)
-		dim_cont : List of dimension for each continuous label (one value per multi-dim label) (optional)
+		Y_cont : Additional numpy array of lists for continuous labels (optional). (n_cont x n_obs)
+		dim_cont : List of dimensions for each continuous class of labels (one value per class) (optional). (n_cont_classes, )
 		lab_weights : Weights for each label's masks in loss calculation (optional) (currently not used)
 		fracNCA : Fraction of NCA cost in loss calculation (default is 0.8)
 		silent : Print average loss per epoch (default is False)
 		ret_loss : Boolean to return matrix of loss values over epochs
 
 		Returns :
+		----------
 		Latent space representation of X
 		"""
 
@@ -453,18 +480,21 @@ class MCML():
 
 
 	def trainTest(self,X,Y,Y_cont = None, dim_cont = None, lab_weights = None, trainFrac = 0.8, fracNCA = 0.8, silent = False):
-		"""
+		"""Fit latent space for training set of X. Test fit on remaining test set of X.
+
 		Parameters:
+		----------
 		X : Input data as numpy array (n_obs x n_features)
-		Y : Label matrix, numpy array of lists. Each col is label, rows are value of obs in that label class. ()
-		Y_cont : Additional numpy array of lists for continuous labels (optional)
-		dim_cont : List of dimension for each continuous label (one value per multi-dim label) (optional)
+		Y : Label matrix, numpy array of lists. Col is label, Row is each label class. (n_classes x n_obs)
+		Y_cont : Additional numpy array of lists for continuous labels (optional). (n_cont x n_obs)
+		dim_cont : List of dimension for each continuous label (one value per multi-dim label) (optional). (n_cont_classes, )
 		lab_weights : Weights for each label's masks in loss calculation (optional) (currently not used)
-		trainFrac : Fraction of X to use for training
+		trainFrac : Fraction of X to use for training. Default is 0.8
 		fracNCA : Fraction of NCA cost in loss calculation (default is 0.8)
 		silent : Print average loss per epoch (default is False)
 
 		Returns :
+		----------
 		Loss values from training and validation batches of X
 		"""
 
@@ -673,21 +703,24 @@ class bMCML(MCML):
 
 
 	def lossFunc(self, recon_batch, X_b, Yout_b, Yin_b):
-		"""
+		"""Calculate bMCML loss function
+
 		Parameters:
+		----------
 		recon_batch : Reconstruction from decoder for mini-batch
 		X_b : Mini-batch of X
 		Yout_b : Batch selection of outer-labels
 		Yin_b : Batch selection of inner-labels
 		
 		Returns :
+		----------
 		Loss value with Biased Reconstruction loss
 		"""
 		losses = []
 
 		
 
-		# ----- Try maximizing label correlation (Pearson) between recon and X input ----- (minimize negative)
+		# ----- Maximizing intra-distance correlation (Pearson) between recon and X (original) input ----- 
 
 		#Calculate variances for recon_batch and X_b 
 		rDists = self.getDist(recon_batch, Yout_b, Yin_b)
@@ -696,6 +729,7 @@ class bMCML(MCML):
 		vx = rDists - torch.mean(rDists)
 		vy = xDists - torch.mean(xDists)
 
+		#Minimize the negative of the correlation
 		recon_loss_b = -1*(torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2))))
 
 		
@@ -714,13 +748,17 @@ class bMCML(MCML):
 		return scaled_losses[0], loss
 
 	def plotLosses(self, figsize=(15,4),fname=None,axisFontSize=11,tickFontSize=10):
-		"""
+		"""Plot loss values over epochs
+
 		Parameters:
+		----------
 		figsize : Tuple for figure size
 		fname : Name for file to save figure to, if None plot is displayed
 		axisFontSize : Font size for axis labels
 		tickFontSize : Font size for tick labels
+
 		Returns :
+		----------
 		Plot of each loss term over epochs
 		"""
 		fig, axs = plt.subplots(1, self.Losses.shape[1],figsize=figsize)
@@ -760,16 +798,19 @@ class bMCML(MCML):
 
 
 	def fit(self, X, Yout, Yin, silent = False, ret_loss = False):
-		"""
+		""" Fit latent space to X input with bMCML cost function and inner and outer labels for intra-label distance optimization
+
 		Parameters:
-		X : Input data as numpy array (obs x features)
-		Y_out : Outer label matrix, numpy array of list. Outer label within which to do correlation calculation.
-		Y_in : Inner label matrix, numpy array of list. Label to do correlation calculation on, within Outer label (e.g. sexes within cell types)
+		----------
+		X : Input data as numpy array (n_obs x features)
+		Y_out : Outer label matrix, numpy array of list. Outer label within which to do correlation calculation. (n_obs, )
+		Y_in : Inner label matrix, numpy array of list. Label to do correlation calculation on, within Outer label (e.g. sexes within cell types). (n_obs, )
 		
 		silent : Print average loss per epoch (default is False)
 		ret_loss : Boolean to return loss values over epochs
 
 		Returns :
+		----------
 		Latent space representation of X
 		"""
 
@@ -836,17 +877,19 @@ class bMCML(MCML):
 
 
 	def trainTest(self,X,Yout, Yin, trainFrac = 0.8, silent = False):
-		"""
+		"""Fit latent space for training set of X. Test fit on remaining test set of X.
+
 		Parameters:
+		----------
 		X : Input data as numpy array (obs x features)
-		Y : Label matrix, numpy array of lists. Each col is label, rows represent value of obs in that label class.
-		Y_out : Outer label matrix, numpy array of list. Outer label within which to do correlation calculation.
-		Y_in : Inner label matrix, numpy array of list. Label to do correlation calculation on, within Outer label (e.g. sexes within cell types)
+		Y_out : Outer label matrix, numpy array of list. Outer label within which to do correlation calculation. (n_obs, )
+		Y_in : Inner label matrix, numpy array of list. Label to do correlation calculation on, within Outer label (e.g. sexes within cell types) (n_obs, )
 		
 		trainFrac : fraction of X used for training
 		silent : Print average loss per epoch (default is False)
 
 		Returns :
+		----------
 		Loss values from training and validation batches of X
 		"""
 
