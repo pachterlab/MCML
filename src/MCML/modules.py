@@ -19,7 +19,7 @@ class autoencoder(nn.Module):
 	"""
 	Create autoencoder architecture
 	Returns: autoencoder object
-    """
+	"""
 	def __init__(self,n_input: int, n_hidden: int, n_output: int, dropout_rate = 0.1):
 		super(autoencoder,self).__init__()
 
@@ -45,7 +45,7 @@ class MCML():
 	"""
 	Create object for fitting NCA model
 	Returns: MCML model object
-    """
+	"""
 
 	def __init__(self, n_latent = 10, n_hidden = 128, epochs = 100,batch_size = 128, lr = 1e-3, weight_decay=1e-5):
 		#super(NN_NCA, self).__init__()
@@ -73,12 +73,12 @@ class MCML():
 
 		Parameters:
 		----------
-	    Y : 2d np array (from lists of lists), columns represent each class of labels
+		Y : 2d np array (from lists of lists), columns represent each class of labels
 
-	    Returns :
-	    ----------
-	    Normalized booleam mask for pairwise comparisons between points for each label class
-	    """
+		Returns :
+		----------
+		Normalized booleam mask for pairwise comparisons between points for each label class
+		"""
 		#Weight mask for each label type by block area
 		masks = []
 
@@ -124,18 +124,18 @@ class MCML():
 
 		Parameters:
 		----------
-	    Y : 2d np array (from lists of lists), columns represent each class of labels
-	    Y_b_cont : Additional numpy array of lists for continuous labels
-		dim_cont : List of dimension for each continuous label (one value per multi-dim label)
+		Y : 2d np array (from lists of lists), columns represent each class of labels
+		Y_b_cont : Additional numpy array of lists for continuous labels (optional). (n_cont x n_obs) n_cont is n_cont_classes*n_dims_per_class
+		dim_cont : List of dimensions for each continuous class of labels (one value per class) (optional). (n_cont_classes, ) e.g. [2] for a 2D class
 		cont : Boolean, if continuous labels are present
 
-	    Returns :
-	    ----------
-	    masks: Mask array for pairwise comparisons between points for each label class
-	    weights: Concatenated mask arrays of weights for pairwise comparisons between points for each continuous label class
-	    """
+		Returns :
+		----------
+		masks: Mask array for pairwise comparisons between points for each label class
+		weights: Concatenated mask arrays of weights for pairwise comparisons between points for each continuous label class
+		"""
 
-	    #Loop through all continuous classes of labels
+		#Loop through all continuous classes of labels
 		if cont: #Continuous classes
 			Y_b_cont = torch.from_numpy(Y_b_cont).float().to(device)
 			Y_b_cont = torch.transpose(Y_b_cont,0, 1)
@@ -387,8 +387,8 @@ class MCML():
 		----------
 		X : Input data as numpy array (n_obs x n_features)
 		Y : Label matrix, numpy array of lists. Col is label, Row is each label class. (n_classes x n_obs)
-		Y_cont : Additional numpy array of lists for continuous labels (optional). (n_cont x n_obs)
-		dim_cont : List of dimensions for each continuous class of labels (one value per class) (optional). (n_cont_classes, )
+		Y_cont : Additional numpy array of lists for continuous labels (optional). (n_cont x n_obs) n_cont is n_cont_classes*n_dims_per_class
+		dim_cont : List of dimensions for each continuous class of labels (one value per class) (optional). (n_cont_classes, ) e.g. [2] for a 2D class
 		lab_weights : Weights for each label's masks in loss calculation (optional) (currently not used)
 		fracNCA : Fraction of NCA cost in loss calculation (default is 0.8)
 		silent : Print average loss per epoch (default is False)
@@ -644,7 +644,7 @@ class bMCML(MCML):
 	"""
 	Create object for fitting biased reconstruction model
 	Returns: Biased Recon model object
-    """
+	"""
 
 	def __init__(self, n_latent = 10, n_hidden = 128, epochs = 100,batch_size = 400, lr = 1e-3, weight_decay=1e-5):
 		super().__init__(n_latent, n_hidden, epochs,batch_size, lr, weight_decay)
@@ -658,7 +658,7 @@ class bMCML(MCML):
 		inLab: 1D numpy array, inner label (e.g. sex)
 		Returns: 
 		Average L1 pairwise distances between cells within inLab labels
-	    """
+		"""
 		outs = np.unique(outLab)
 		avg_dists = []
 
