@@ -13,7 +13,7 @@ In Ubuntu, Mint and Debian you can install Python 3 like this:
 
     $ sudo apt-get install python3 python3-pip
 
-For other Linux flavors, macOS and Windows, packages are available at
+For other Linux distributions, macOS and Windows, packages are available at
 
   https://www.python.org/getit/
 
