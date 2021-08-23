@@ -79,24 +79,27 @@ To run the __MCML__ algorithm for dimensionality reduction (Python 3):
 ```python
 >>> from MCML.modules import MCML, bMCML
 
->>> mcml = MCML(n_latent = 50) #Initialize MCML class
+>>> mcml = MCML(n_latent = 50, epochs = 100) #Initialize MCML class
 
 >>> latentMCML = mcml.fit(mat, np.array([cellTypes,sexLabels]) , fracNCA = 0.8 , silent = True) #Run MCML
 >>> latentMCML.shape
 (3850, 50)
 
+```
+This incorporates both the cell type and sex labels into the latent space construction. Use _plotLosses()_ to view the loss function components over the training epochs. 
+
+```python
+
 >>> mcml.plotLosses(figsize=(10,3),axisFontSize=10,tickFontSize=8) #Plot loss over epochs
 
 ```
-This incorporates both the cell type and sex labels into the latent space construction.
-
 
 <br/><br/>
 
 To run the __bMCML__ algorithm for dimensionality reduction (Python 3):
 
 ```python
->>> bmcml = bMCML(n_latent = 50) #Initialize bMCML class
+>>> bmcml = bMCML(n_latent = 50, epochs = 100) #Initialize bMCML class
 
 
 >>> latentbMCML = bmcml.fit(mat, np.array(cellTypes), np.array(sexLabels), silent=True) #Run bMCML
@@ -108,6 +111,8 @@ To run the __bMCML__ algorithm for dimensionality reduction (Python 3):
 ```
 __bMCML__ is optimizing for the intra-distances of the sex labels i.e. the pairwise distances of cells in each sex for each cell type.
 
+
+For both __bMCML__ and __MCML__ objects, _fit()_ can be replaced with _trainTest()_ to train the algorithms on a subset of the full data and apply the learned weights to the remaining test data. This offers a method assessing overfitting.
 
 <br/><br/>
 
