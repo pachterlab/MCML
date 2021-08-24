@@ -214,10 +214,10 @@ def frac_unique_neighbors(latent, cluster_label, metric = 1,neighbors = 30):
 
 	Returns
 	-------
-	frac_neighbors : Dictionary mapping each unique label in the class cluster_label
-	to list of fraction of neighbors in the same label for each cell
-	unique_clusters : Dictionary mapping each unique label in the category cluster_label
-	to a list of unique labels of each cell's neighbors
+	frac_neighbors : Dictionary with each key a unique label in the class cluster_label, and
+	each value a list of the fraction of neighbors in the same label (for each cell in that label)
+	unique_clusters : Dictionary with each key a unique label in the category cluster_label and
+	each value a list of the unique labels of each cell's neighbors (for each cell in that label)
 	"""
 	cats = pd.Categorical(cluster_label)
 	# Get nearest neighbors in embedding
