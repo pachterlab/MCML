@@ -126,15 +126,28 @@ To use the metrics available in __tools__:
 >>> len(cDists)
 784
 
-#Avg pairwise distances between cells of both sexes, for each cell type
+#Avg pairwise distances between cells of *both* sexes, for each cell type
 >>> interDists = tl.getInterVar(mat, np.array(cellTypes), np.array(sexLabels))  
 >>> len(interDists)
 27
 
-#Avg pairwise distances between cells of the same sex, for each cell type
+#Avg pairwise distances between cells of the *same* sex, for each cell type
 >>> intraDists = tl.getIntraVar(mat, np.array(cellTypes), np.array(sexLabels)) 
 >>> len(intraDists)
 53
+
+#Fraction of neighbors for each cell with same label as cell itself (also returns which labels neighbors have)
+>>> neighbor_fracs, which_labels = tl.frac_unique_neighbors(mat, np.array(cellTypes), metric = 1,neighbors = 30)
+
+#Get nearest neighbors for any embedding
+>>> orig_neigh = tl.getNeighbors(mat, n_neigh = 15, p=1)
+>>> latent_neigh = tl.getNeighbors(latentMCML, n_neigh = 15, p=1)
+
+#Get Jaccard distance between latent and ambient nearest neighbors
+>>> jac_dists = tl.getJaccard(orig_neigh, latent_neigh)
+>>>len(jac_dists)
+3850
+
 
 ```
 
